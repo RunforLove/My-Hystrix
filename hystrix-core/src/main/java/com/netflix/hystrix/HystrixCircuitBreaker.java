@@ -24,14 +24,23 @@ import rx.Subscriber;
 import rx.Subscription;
 
 /**
+ * Circuit-breaker 断路器
+ *
+ * 断路器断逻辑：如果失败已经超过了定义断阈值，将停止允许执行；
  * Circuit-breaker logic that is hooked into {@link HystrixCommand} execution and will stop allowing executions if failures have gone past the defined threshold.
  * <p>
  * The default (and only) implementation  will then allow a single retry after a defined sleepWindow until the execution
  * succeeds at which point it will again close the circuit and allow executions again.
+ *
+ * 默认的实现: 允许在定义的窗口期之后，进行一次重试，直到请求执行成功；否则，断路器将会再次关闭，并且重复上述逻辑；
  */
 public interface HystrixCircuitBreaker {
 
     /**
+     * 每个请求进来都会被判断是否允许继续运行;
+     * 它是幂等的，并且不会修改任何后端的状态;
+     * takes into account考虑到：half-open logic半开放逻辑，在电路被打开之后，允许一些请求进来。
+     *
      * Every {@link HystrixCommand} requests asks this if it is allowed to proceed or not.  It is idempotent and does
      * not modify any internal state, and takes into account the half-open logic which allows some requests through
      * after the circuit has been opened
@@ -48,26 +57,38 @@ public interface HystrixCircuitBreaker {
     boolean isOpen();
 
     /**
+     * 在半开放状态，当调用成功执行的时候，做为反馈机制的一部分；
+     *
      * Invoked on successful executions from {@link HystrixCommand} as part of feedback mechanism when in a half-open state.
      */
     void markSuccess();
 
     /**
+     *
+     *
      * Invoked on unsuccessful executions from {@link HystrixCommand} as part of feedback mechanism when in a half-open state.
      */
     void markNonSuccess();
 
     /**
+     * 在命令执行开始时调用，以尝试执行；它是幂等的，并且会修改后面服务的状态；
+     *
      * Invoked at start of command execution to attempt an execution.  This is non-idempotent - it may modify internal
      * state.
      */
     boolean attemptExecution();
 
     /**
+     * exclude from javadoc
+     *
      * @ExcludeFromJavadoc
      * @ThreadSafe
      */
     class Factory {
+
+        /**
+         * 并发编程中，经常被使用到的数据结构:ConcurrentHashMap
+         */
         // String is HystrixCommandKey.name() (we can't use HystrixCommandKey directly as we can't guarantee it implements hashcode/equals correctly)
         private static ConcurrentHashMap<String, HystrixCircuitBreaker> circuitBreakersByCommand = new ConcurrentHashMap<String, HystrixCircuitBreaker>();
 

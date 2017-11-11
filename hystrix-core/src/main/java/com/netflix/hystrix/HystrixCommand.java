@@ -57,6 +57,9 @@ public abstract class HystrixCommand<R> extends AbstractCommand<R> implements Hy
      *            <p>
      *            The {@link HystrixCommandGroupKey} is used to represent a common relationship between commands. For example, a library or team name, the system all related commands interact with,
      *            common business purpose etc.
+     *  private构造防范，通常被用在单例场景，通过对外暴露build()方法，创建当前类的实例
+     *  protected构造方法;允许被当前clas 当前package 当前subclass调用
+     *
      */
     protected HystrixCommand(HystrixCommandGroupKey group) {
         super(group, null, null, null, null, null, null, null, null, null, null, null);
