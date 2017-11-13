@@ -22,6 +22,11 @@ import java.net.HttpCookie;
  */
 public class Order {
 
+    /**
+     * fianl 修饰变量，则该变量不可以改变；并且必须被初始化，或者在构造方法中初始化；
+     * final 修饰对象，则该对象不能再派生出新的子类，
+     * final 修饰方法，则方法只能使用，不能重载；
+     */
     private final int orderId;
     private UserAccount user;
 

@@ -46,6 +46,8 @@ public interface HystrixCircuitBreaker {
      * after the circuit has been opened
      * 
      * @return boolean whether a request should be permitted
+     *
+     * 是否允许指令执行
      */
     boolean allowRequest();
 
@@ -53,6 +55,8 @@ public interface HystrixCircuitBreaker {
      * Whether the circuit is currently open (tripped).
      * 
      * @return boolean state of circuit breaker
+     *
+     * 断路器是否为开启状态
      */
     boolean isOpen();
 
@@ -60,6 +64,8 @@ public interface HystrixCircuitBreaker {
      * 在半开放状态，当调用成功执行的时候，做为反馈机制的一部分；
      *
      * Invoked on successful executions from {@link HystrixCommand} as part of feedback mechanism when in a half-open state.
+     *
+     * 用于将断路器关闭;
      */
     void markSuccess();
 

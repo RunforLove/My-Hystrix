@@ -27,6 +27,19 @@ public class UserAccount {
     private final boolean isFeatureYenabled;
     private final boolean isFeatureZenabled;
 
+    /**
+     * final成员变量表示常量，只能被赋值一次，赋值后值不再改变。
+     * 定义的时候必须赋值，此种用法：在构造方法中赋值；
+     *
+     * 没有提供setter方法，只有getter方法和构造方法；
+     *
+     * @param userId
+     * @param name
+     * @param accountType
+     * @param x
+     * @param y
+     * @param z
+     */
     public UserAccount(int userId, String name, int accountType, boolean x, boolean y, boolean z) {
         this.userId = userId;
         this.name = name;
